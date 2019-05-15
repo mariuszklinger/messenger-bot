@@ -1,3 +1,4 @@
+
 /**
  * Copyright 2017-present, Facebook, Inc. All rights reserved.
  *
@@ -21,23 +22,12 @@
 
 'use strict';
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
-const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
-
-const PORT = process.env.PORT || 5000
 // Imports dependencies and set up http server
-
-const path = require('path')
 const
   request = require('request'),
   express = require('express'),
-
   body_parser = require('body-parser'),
-  app = express()
-    .use(express.static(path.join(__dirname, 'public')))
-    .set('views', path.join(__dirname, 'views'))
-    .set('view engine', 'ejs')
-    .get('/', (req, res) => res.render('pages/index'))
-    .use(body_parser.json()); // creates express http server
+  app = express().use(body_parser.json()); // creates express http server
 
 // Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
@@ -85,11 +75,8 @@ app.post('/webhook', (req, res) => {
 // Accepts GET requests at the /webhook endpoint
 app.get('/webhook', (req, res) => {
 
-
-  console.log(`moj VERIFY_TOKEN: ${VERIFY_TOKEN}`)
-
   /** UPDATE YOUR VERIFY TOKEN **/
-  // const VERIFY_TOKEN = "<YOUR VERIFY TOKEN>";
+  const VERIFY_TOKEN = "<YOUR VERIFY TOKEN>";
 
   // Parse params from the webhook verification request
   const mode = req.query['hub.mode'];
