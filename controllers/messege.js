@@ -1,7 +1,9 @@
 const callSendAPI = require('../utils/facebook');
+const { ENABLE_LOGS } = process.env;
 
 function onNewMessage (req, res) {
-  if (req.body.object !== 'page') {
+  const { body } = req;
+  if (body.object !== 'page') {
     res.sendStatus(404);
   }
 
@@ -12,6 +14,7 @@ function onNewMessage (req, res) {
     const { sender_psid, message } = webhook_event;
 
     if (message) {
+      ENABLE_LOGS && console.log(`[MESSAGE] ${message}`);
       handleMessage(sender_psid, message);
     }
   });
