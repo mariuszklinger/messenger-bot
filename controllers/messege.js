@@ -17,6 +17,9 @@ function onNewMessage (req, res) {
     if (message) {
       handleMessage(psid, message);
     }
+    else {
+      ENABLE_LOGS && console.log(`[EVENT] `, webhook_event);
+    }
   });
 
   res
@@ -27,12 +30,12 @@ function onNewMessage (req, res) {
 function handleMessage(sender_psid, received_message) {
   const isTextMessage = received_message.text;
   const response = {
-    text: isTextMessage ? `Your request ${received_message.text} is saved`: 'Something went wrong...',
+    text: isTextMessage ? `Your request "${received_message.text}" is saved`: 'Something went wrong...',
   };
 
   if (isTextMessage) {
     setTimeout(() => callSendAPI(sender_psid, {
-      text: `Surprise! (Response to: ${received_message.text}`
+      text: `Surprise! (Response to: ${received_message.text})`
     }), 60000);
   }
 
