@@ -14,7 +14,7 @@ function onNewMessage (req, res) {
     const { sender_psid, message } = webhook_event;
 
     if (message) {
-      ENABLE_LOGS && console.log(`[MESSAGE] ${message}`);
+      ENABLE_LOGS && console.log(`[MESSAGE] ${message.text}`, message);
       handleMessage(sender_psid, message);
     }
   });
@@ -26,8 +26,10 @@ function onNewMessage (req, res) {
 
 function handleMessage(sender_psid, received_message) {
   let response;
-
   const isTextMessage = received_message.text;
+
+  console.log('xx')
+  console.log(received_message)
 
   // Checks if the message contains text
   if (isTextMessage) {
