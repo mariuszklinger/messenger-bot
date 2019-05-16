@@ -12,12 +12,10 @@ function onNewMessage (req, res) {
   body.entry.forEach(function(entry) {
 
     const webhook_event = entry.messaging[0];
-    const { sender_psid, message } = webhook_event;
-
-    ENABLE_LOGS && console.log(`[EVENT] `, webhook_event);
+    const { sender: { id: psid }, message } = webhook_event;
 
     if (message) {
-      handleMessage(sender_psid, message);
+      handleMessage(psid, message);
     }
   });
 
@@ -27,29 +25,18 @@ function onNewMessage (req, res) {
 };
 
 function handleMessage(sender_psid, received_message) {
-  let response;
   const isTextMessage = received_message.text;
+  const response = {
+    test: isTextMessage ? `Your request ${received_message.text} is saved`: 'Something went wrong...',
+  };
 
-  // Checks if the message contains text
   if (isTextMessage) {
-    response = {
-      'text': `Thanks for the message: ${received_message.text}, prepare for surprise soon!`,
-    }
-
     setTimeout(() => callSendAPI(sender_psid, {
-      text: 'Surprise!'
+      text: `Surprise! (Response to: ${received_message.text}`
     }), 60000);
-
-  } else {
-    response = {
-      'text': 'Got nothing :('
-    };
   }
 
-  // Send the response message
   callSendAPI(sender_psid, response);
 }
-
-
 
 module.exports = onNewMessage;
