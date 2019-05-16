@@ -1,4 +1,5 @@
 const callSendAPI = require('../utils/facebook');
+
 const { ENABLE_LOGS } = process.env;
 
 function onNewMessage (req, res) {
@@ -13,8 +14,9 @@ function onNewMessage (req, res) {
     const webhook_event = entry.messaging[0];
     const { sender_psid, message } = webhook_event;
 
+    ENABLE_LOGS && console.log(`[EVENT] `, webhook_event);
+
     if (message) {
-      ENABLE_LOGS && console.log(`[MESSAGE] ${message.text}`, message);
       handleMessage(sender_psid, message);
     }
   });
@@ -28,9 +30,6 @@ function handleMessage(sender_psid, received_message) {
   let response;
   const isTextMessage = received_message.text;
 
-  console.log('xx')
-  console.log(received_message)
-
   // Checks if the message contains text
   if (isTextMessage) {
     response = {
@@ -42,9 +41,9 @@ function handleMessage(sender_psid, received_message) {
     }), 60000);
 
   } else {
-      response = {
-        'text': 'Got nothing :('
-      };
+    response = {
+      'text': 'Got nothing :('
+    };
   }
 
   // Send the response message

@@ -1,5 +1,7 @@
 const request = require('request');
 
+const { ENABLE_LOGS } = process.env;
+
 function callSendAPI(sender_psid, response) {
   const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
@@ -9,6 +11,8 @@ function callSendAPI(sender_psid, response) {
     },
     'message': response
   }
+
+  ENABLE_LOGS && console.log(`[RESPONSE] ${request_body}`);
 
   // Send the HTTP request to the Messenger Platform
   request({
@@ -20,6 +24,7 @@ function callSendAPI(sender_psid, response) {
     'json': request_body
   }, (err, res, body) => {
     if (!err) {
+      console.log('[RESPONSE] ', res)
       console.log('message sent!')
     } else {
       console.error('Unable to send message:' + err);
