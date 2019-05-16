@@ -27,7 +27,7 @@ function onNewMessage (req, res) {
 function handleMessage(sender_psid, received_message) {
   const isTextMessage = received_message.text;
   const response = {
-    test: isTextMessage ? `Your request ${received_message.text} is saved`: 'Something went wrong...',
+    text: isTextMessage ? `Your request ${received_message.text} is saved`: 'Something went wrong...',
   };
 
   if (isTextMessage) {
