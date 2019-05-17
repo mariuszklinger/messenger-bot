@@ -12,7 +12,7 @@ const isValidMessage = (msg) => {
 
   const [url, ...keywords] = msg.split(/\s+/);
 
-  return URL_REGEXP.test(url) && keywords && keywords.length > MAX_KEYWORDS;
+  return URL_REGEXP.test(url) && keywords && keywords.length <= MAX_KEYWORDS;
 };
 
 const isUserExceedLimit = psid => new Promise((resolve) => {
