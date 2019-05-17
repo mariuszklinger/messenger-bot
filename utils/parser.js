@@ -1,8 +1,8 @@
+const http = require('http');
+const https = require('https');
+
 function getPage(url) {
   return new Promise((resolve, reject) => {
-    const http      = require('http'),
-          https     = require('https');
-
     const isURLHttps = url.toString().indexOf('https') === 0;
     const client = isURLHttps ? https : http;
 
@@ -18,12 +18,11 @@ function getPage(url) {
       resp.on('end', () => {
         resolve(data);
       });
-
-    }).on("error", (err) => {
+    }).on('error', (err) => {
       reject(err);
     });
   });
-};
+}
 
 function checkForKeywords(pageSource, ...keywords) {
   const rows = pageSource.split('\n');
@@ -32,17 +31,19 @@ function checkForKeywords(pageSource, ...keywords) {
     return false;
   }
 
-  const isRowContainAnyKeyword = (row) => keywords
+  const isRowContainAnyKeyword = row => keywords
     .some(word => row.includes(word));
 
   return rows.some(isRowContainAnyKeyword);
 }
 
-// (async (url) => {
-//   console.log(await getPage(url));
-// })('https://sidanmor.com/');
+async function checkURLforKeywords(url, keywords) {
+  const src = await getPage(url);
+  return checkForKeywords(src, keywords);
+}
 
 module.exports = {
   getPage,
   checkForKeywords,
-}
+  checkURLforKeywords,
+};
