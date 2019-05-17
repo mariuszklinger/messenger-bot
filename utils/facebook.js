@@ -12,7 +12,7 @@ function callSendAPI(sender_psid, response) {
     'message': response,
   };
 
-  ENABLE_LOGS && console.log(`[RESPONSE] ${request_body}`);
+  // ENABLE_LOGS && console.log(`[RESPONSE] ${request_body}`);
 
   // Send the HTTP request to the Messenger Platform
   request({
@@ -24,7 +24,7 @@ function callSendAPI(sender_psid, response) {
     'json': request_body,
   }, (err, res, body) => {
     if (!err) {
-      console.log('[SUCCESS] ', res);
+      console.log('[SUCCESS]');
     } else {
       console.error('Unable to send message:' + err);
     }

@@ -35,9 +35,10 @@ async function handleMessage(sender_psid, received_message) {
 
   const doGET = async () => {
     const src = await getPage(url);
-    if (checkForKeywords(src, keyword)) {
-      callSendAPI(sender_psid, `${url} contains ${keyword}`);
-    }
+    const isPageContainsKeyword = checkForKeywords(src, keyword);
+    const msg = isPageContainsKeyword ? `${url} contains ${keyword}` : `${url} DOES NOT contains ${keyword}`;
+
+    callSendAPI(sender_psid, { text: msg });
   }
 
   setTimeout(doGET, 0);
