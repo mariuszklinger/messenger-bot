@@ -7,10 +7,10 @@ function callSendAPI(sender_psid, response) {
 
   const request_body = {
     'recipient': {
-      'id': sender_psid
+      'id': sender_psid,
     },
-    'message': response
-  }
+    'message': response,
+  };
 
   ENABLE_LOGS && console.log(`[RESPONSE] ${request_body}`);
 
@@ -18,14 +18,13 @@ function callSendAPI(sender_psid, response) {
   request({
     'uri': 'https://graph.facebook.com/v2.6/me/messages',
     'qs': {
-      'access_token': PAGE_ACCESS_TOKEN
+      'access_token': PAGE_ACCESS_TOKEN,
     },
     'method': 'POST',
-    'json': request_body
+    'json': request_body,
   }, (err, res, body) => {
     if (!err) {
-      console.log('[RESPONSE] ', res)
-      console.log('message sent!')
+      console.log('[SUCCESS] ', res);
     } else {
       console.error('Unable to send message:' + err);
     }
