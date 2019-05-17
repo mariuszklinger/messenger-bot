@@ -1,4 +1,5 @@
 const callSendAPI = require('../utils/facebook');
+const { getPage, checkForKeywords } = require('../utils/parser');
 
 const { ENABLE_LOGS } = process.env;
 
@@ -27,11 +28,16 @@ function onNewMessage (req, res) {
     .send('EVENT_RECEIVED');
 };
 
-function handleMessage(sender_psid, received_message) {
+async function handleMessage(sender_psid, received_message) {
   const isTextMessage = received_message.text;
   const response = {
     text: isTextMessage ? `Your request "${received_message.text}" is saved`: 'Something went wrong...',
   };
+
+  const [ url, keyword ] = received_message.text.split(' ');
+
+  const src = await getPage(url);
+  console.log(checkForKeywords(src, keyword));
 
   if (isTextMessage) {
     setTimeout(() => callSendAPI(sender_psid, {

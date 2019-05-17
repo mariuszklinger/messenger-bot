@@ -1,4 +1,4 @@
-export function getPage(url) {
+function getPage(url) {
   return new Promise((resolve, reject) => {
     const http      = require('http'),
           https     = require('https');
@@ -25,7 +25,7 @@ export function getPage(url) {
   });
 };
 
-export function checkForKeywords(pageSource, ...keywords) {
+function checkForKeywords(pageSource, ...keywords) {
   const rows = pageSource.split('\n');
 
   if (!rows.length) {
@@ -38,9 +38,11 @@ export function checkForKeywords(pageSource, ...keywords) {
   return rows.some(isRowContainAnyKeyword);
 }
 
-(async (url) => {
-  console.log(await getPage(url));
-})('https://sidanmor.com/');
+// (async (url) => {
+//   console.log(await getPage(url));
+// })('https://sidanmor.com/');
 
-
-setTimeout(() => console.log('elooo timeout'), 60);
+module.exports = {
+  getPage,
+  checkForKeywords,
+}

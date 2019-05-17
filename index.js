@@ -22,3 +22,5 @@ app.listen(PORT, () => console.log('webhook is listening'));
 
 app.post('/webhook', onPost);
 app.get('/webhook', handleFBVerification);
+
+require('./index-worker');
