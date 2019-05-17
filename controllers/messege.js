@@ -33,7 +33,7 @@ async function handleMessage(sender_psid, received_message) {
 
   const [ url, keyword ] = received_message.text.split(' ');
 
-  const doGET = () => {
+  const doGET = async () => {
     const src = await getPage(url);
     if (checkForKeywords(src, keyword)) {
       callSendAPI(sender_psid, `${url} contains ${keyword}`);
