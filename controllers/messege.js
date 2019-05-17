@@ -18,9 +18,6 @@ function onNewMessage (req, res) {
     if (message) {
       handleMessage(psid, message);
     }
-    else {
-      ENABLE_LOGS && console.log(`[EVENT] `, webhook_event);
-    }
   });
 
   res
@@ -36,8 +33,14 @@ async function handleMessage(sender_psid, received_message) {
 
   const [ url, keyword ] = received_message.text.split(' ');
 
-  const src = await getPage(url);
-  console.log(checkForKeywords(src, keyword));
+  const doGET = () => {
+    const src = await getPage(url);
+    if (checkForKeywords(src, keyword)) {
+      callSendAPI(sender_psid, `${url} contains ${keyword}`);
+    }
+  }
+
+  setTimeout(doGET, 0);
 
   if (isTextMessage) {
     setTimeout(() => callSendAPI(sender_psid, {
