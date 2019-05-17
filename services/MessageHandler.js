@@ -27,7 +27,7 @@ async function handleMessage(psid, receivedMessage) {
 
   if (!isValidMessage(textMessage)) {
     response.text = `Wrong format of message, please use:
-      \`[url keyword1 keyword2 keyword3]\`
+      \`url keyword#1 keyword#2 keyword#3\`
     `;
     return callSendAPI(psid, response);
   }
