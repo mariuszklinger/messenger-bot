@@ -1,5 +1,4 @@
 const callSendAPI = require('../utils/facebook');
-const User = require('../models/User');
 const WatchRequest = require('../models/WatchRequest');
 
 require('dotenv').config();
@@ -8,7 +7,7 @@ require('../utils/dbConn');
 const MAX_URL = 3;
 
 const isValidMessage = (msg) => {
-  const URL_REGEXP = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
+  const URL_REGEXP = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%.+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
   const MAX_KEYWORDS = 3;
 
   const [url, ...keywords] = msg.split(/\s+/);
@@ -16,21 +15,11 @@ const isValidMessage = (msg) => {
   return (!URL_REGEXP.test(url) || !keywords || keywords.length > MAX_KEYWORDS);
 };
 
-const isUserExceedLimit =
-  async psid => await WatchRequest.count({ psid }) > MAX_URL;
-
-const getOrCreateUser = async (psid) => {
-  const user = await (async () => User.findOne({ psid }))();
-
-  if (user) {
-    return user;
-  }
-
-  const newUser = new User({ psid });
-  newUser.save();
-
-  return newUser;
-};
+const isUserExceedLimit = psid => new Promise((resolve) => {
+  WatchRequest.countDocuments({ psid }, (err, count) => {
+    resolve(count > MAX_URL);
+  });
+});
 
 async function handleMessage(psid, receivedMessage) {
   const textMessage = receivedMessage.text;
@@ -40,22 +29,22 @@ async function handleMessage(psid, receivedMessage) {
     response.text = `Wrong format of message, please use:
       [url keyword1 keyword2 keyword3]
     `;
-  } else if (isUserExceedLimit(psid)) {
-    response.text = 'You have already exceed request limit';
-  } else {
-    const [url, ...keywords] = textMessage.split(/\s+/);
-    const watchRequest = new WatchRequest({ psid, url, keywords });
-    watchRequest.save();
-
-    response.text = 'Request saved!';
+    return callSendAPI(psid, response);
   }
 
-  // const user = await getOrCreateUser(psid);
+  if (await isUserExceedLimit(psid)) {
+    response.text = 'You have already exceed request limit';
+    return callSendAPI(psid, response);
+  }
 
-  callSendAPI(psid, response);
+  const [url, ...keywords] = textMessage.split(/\s+/);
+  const watchRequest = new WatchRequest({ psid, url, keywords });
+  watchRequest.save();
+
+  response.text = 'Request saved, we will keep in the loop!';
+
+  return callSendAPI(psid, response);
 }
-
-// handleMessage(888, { text: '123' });
 
 module.exports = {
   handleMessage,
