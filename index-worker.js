@@ -26,14 +26,13 @@ async function getElementsArray(cores = numChild) {
 }
 
 async function init() {
-  console.log('init dzifko')
   const elementsAmounts = await getElementsArray();
   let lastOffset = 0;
 
   return [...Array(numChild)].map((_, i) => {
     const amount = elementsAmounts[i];
 
-    const child = spawn('node', [workerPath, lastOffset, amount], {
+    const child = spawn('node', [workerPath, lastOffset -1, amount], {
       detached: true,
     });
 

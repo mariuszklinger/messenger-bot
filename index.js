@@ -26,4 +26,4 @@ app.get('/', (req, res) => res.render('pages/index'));
 // background workers:
 const { WORKER_INTERVAL } = process.env;
 const timeInterval = 1000 * 60 * (WORKER_INTERVAL || 15); // 15 min
-setInterval(startWorker, timeInterval);
+// setInterval(startWorker, timeInterval); // TODO: 
