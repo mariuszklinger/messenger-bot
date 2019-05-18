@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const path = require('path');
 const { spawn } = require('child_process');
-const numChild = require('os').cpus().length;
+const numChild = 2; // require('os').cpus().length;
 const db = require('./utils/dbConn');
 const WatchRequestModel = require('./models/WatchRequest');
 
@@ -26,6 +26,7 @@ async function getElementsArray(cores = numChild) {
 }
 
 async function init() {
+  console.log('init dzifko')
   const elementsAmounts = await getElementsArray();
   let lastOffset = 0;
 
@@ -46,6 +47,10 @@ async function init() {
 
     return child;
   });
+}
+
+if (!module.parent) {
+  db.once('open', init);
 }
 
 module.exports = () => db.once('open', init);

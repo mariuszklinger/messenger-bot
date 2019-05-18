@@ -43,6 +43,7 @@ async function init() {
   while (requests.length);
 
   console.log('All request processed');
+  process.exit(0);
 }
 
 db.once('open', init);
