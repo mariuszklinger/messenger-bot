@@ -27,6 +27,8 @@ async function init() {
     process.exit(0);
   }
 
+  console.log(`Found ${requests.length} records...`);
+
   do {
     const request = requests.pop();
     const { url, psid, keywords } = request;

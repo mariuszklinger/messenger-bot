@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const path = require('path');
 const { spawn } = require('child_process');
-const numChild = 2; // require('os').cpus().length;
+const numChild = 1; // require('os').cpus().length;
 const db = require('./utils/dbConn');
 const WatchRequestModel = require('./models/WatchRequest');
 
