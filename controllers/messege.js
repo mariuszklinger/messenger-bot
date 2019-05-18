@@ -1,4 +1,4 @@
-const { handleMessage } = require('../services/MessageHandler');
+const { handleMessage } = require('../utils/messageHandler');
 
 function onNewMessage(req, res) {
   const { body } = req;

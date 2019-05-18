@@ -1,8 +1,8 @@
-const callSendAPI = require('../utils/facebook');
+const callSendAPI = require('./facebook');
 const WatchRequest = require('../models/WatchRequest');
 
 require('dotenv').config();
-require('../utils/dbConn');
+require('./dbConn');
 
 const MAX_URL = 3;
 
@@ -27,7 +27,7 @@ async function handleMessage(psid, receivedMessage) {
 
   if (!isValidMessage(textMessage)) {
     response.text = `Wrong format of message, please use:
-      \`url keyword#1 keyword#2 keyword#3\`
+      \`website keyword#1 keyword#2 keyword#3\`
     `;
     return callSendAPI(psid, response);
   }

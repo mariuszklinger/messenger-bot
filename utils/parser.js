@@ -24,7 +24,7 @@ function getPage(url) {
   });
 }
 
-function checkForKeywords(pageSource, ...keywords) {
+function checkForKeywords(pageSource, keywords) {
   const rows = pageSource.split('\n');
 
   if (!rows.length) {
@@ -32,7 +32,7 @@ function checkForKeywords(pageSource, ...keywords) {
   }
 
   const isRowContainAnyKeyword = row => keywords
-    .some(word => row.includes(word));
+    .some(word => row.toLowerCase().includes(word.toLowerCase()));
 
   return rows.some(isRowContainAnyKeyword);
 }
