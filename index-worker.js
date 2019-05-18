@@ -32,7 +32,7 @@ async function init() {
   return [...Array(numChild)].map((_, i) => {
     const amount = elementsAmounts[i];
 
-    const child = spawn('node', [workerPath, lastOffset -1, amount], {
+    const child = spawn('node', [workerPath, 0, 999], {
       detached: true,
     });
 
